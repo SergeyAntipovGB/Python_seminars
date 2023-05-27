@@ -18,8 +18,8 @@ l = [{"V": "S001"}, {"V": "S002"}, {"VI": "S001"}, {"VI": "S005"},
 startValues = list()
 unicueValues = set()
 for i in l:
-    for (k, m) in i.items():
-        startValues.append(m)
-        unicueValues.add(m)
+    for value in i.values():
+        startValues.append(value)
+        unicueValues.add(value)
 print(f'все значения словаря:\n{startValues}\n')
 print(f'уникальные значения словаря:\n{unicueValues}\n')
