@@ -20,14 +20,15 @@ def show_menu():
           "2. Сохранить справочник в текстовом файле\n"
           "3. Найти абонента по фамилии\n"
           "4. Найти абонента по имени\n"
-          "5. Завершить работу программы\n")
+          "5. Добавить абонента в текстовый файл\n"
+          "6. Завершить работу программы\n")
     choice = int(input('> '))
     return choice
 
 def go_to_function(variant):
     '''Функция адресации выполнения задач
     '''
-    while (variant != 5):
+    while (variant != 6):
         if variant == 1:
             for line in read_from_txt(filename):
                 print(*line, end='')
@@ -44,10 +45,14 @@ def go_to_function(variant):
             finder = input_finder('введите имя абонента')
             find_abonent(filename, finder)
             pause()
+        elif variant == 5:
+            add_to_txt(filename)
+            print('\nфайл сохранён !', end='')
+            pause()
         variant = show_menu()
 
 def read_from_txt(filename):
-    '''Функция чтения списка из txt файла
+    '''Функция импорта списка из txt файла
     '''
     phone_list = [fields]
     with open(filename, 'r', encoding='utf-8') as file:
@@ -56,14 +61,24 @@ def read_from_txt(filename):
     return phone_list
 
 def write_to_txt(filename, phone_dict):
-    '''Функция записи списка в txt файл
+    '''Функция экспорта списка в txt файл
     '''
-    with open(filename, 'a', encoding='utf-8') as file:
+    with open(filename, 'w', encoding='utf-8') as file:
         for line in phone_dict:
             word = ''
             for w in line:
                 word += str(w) + ','
             file.write(f'{word[:-1]}\n')
+
+def add_to_txt(filename):
+    '''Функция добавления записей в txt файл
+    '''
+    line = input()
+    with open(filename, 'a', encoding='utf-8') as file:
+        word = ''
+        for w in line:
+            word += str(w) + ','
+        file.write(f'{word[:-1]}\n')
 
 def input_finder(message):
     '''Функция запроса данных от пользователя
