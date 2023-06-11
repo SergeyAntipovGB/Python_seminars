@@ -14,3 +14,11 @@ res = list(map(lambda x: sum([1 for i in x if i == 'а']), phrases))
 # количества равные максимальному значению не суммируются
 if sum(list(filter(lambda y: y != max(res), res))) == 0: print('Парам пам-пам')
 else: print('Пам парам')
+
+
+# for i in phrases:
+# 	nums.append(len([x for x in i if x.lower() in vowels]))
+# if nums.count(nums[0]) == len(nums):
+# 	print('Парам пам-пам')
+# else:
+# 	print('Пам парам')
