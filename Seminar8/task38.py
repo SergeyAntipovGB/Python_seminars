@@ -21,14 +21,16 @@ def show_menu():
           "3. Найти абонента по фамилии\n"
           "4. Найти абонента по имени\n"
           "5. Добавить абонента в текстовый файл\n"
-          "6. Завершить работу программы\n")
-    choice = int(input('> '))
-    return choice
+          "6. Удалить абонента из текстового файла\n"
+          "7. Завершить работу программы\n")
+    choice = input('> ')
+    if choice.isdigit(): return int(choice)
+    return show_menu()
 
 def go_to_function(variant):
     '''Функция адресации выполнения задач
     '''
-    while (variant != 6):
+    while (variant != 7):
         if variant == 1:
             for line in read_from_txt(filename):
                 print(*line, end='')
@@ -47,7 +49,12 @@ def go_to_function(variant):
             pause()
         elif variant == 5:
             add_to_txt(filename)
-            print('\nфайл сохранён !', end='')
+            print('\nданные внесены !', end='')
+            pause()
+        elif variant == 6:
+            finder = input_finder('введите фамилию или имя абонента')
+            del_from_txt(filename, finder)
+            print('\nданные удалены !', end='')
             pause()
         variant = show_menu()
 
@@ -65,20 +72,26 @@ def write_to_txt(filename, phone_dict):
     '''
     with open(filename, 'w', encoding='utf-8') as file:
         for line in phone_dict:
-            word = ''
-            for w in line:
-                word += str(w) + ','
-            file.write(f'{word[:-1]}\n')
+            file.write(",".join(line))
 
-def add_to_txt(filename):
+def add_to_txt(filename, line = []):
     '''Функция добавления записей в txt файл
     '''
-    line = input()
+    print('введите следующие данные для записи в справочник:')
+    for item in fields:
+        line.append(input(f'\n{item.strip()} > ').title())
     with open(filename, 'a', encoding='utf-8') as file:
-        word = ''
-        for w in line:
-            word += str(w) + ','
-        file.write(f'{word[:-1]}\n')
+        file.write(f'{",".join(line)}\n')
+
+def del_from_txt(filename, find_param):
+    '''Функция удаления записи абонента из txt файла
+    '''
+    phone_book = read_from_txt(filename)[1:]
+    for line in phone_book:
+        if find_param in line:
+            print(*line)
+            phone_book.remove(line)
+    write_to_txt(filename, phone_book)
 
 def input_finder(message):
     '''Функция запроса данных от пользователя
@@ -105,11 +118,13 @@ def find_abonent(filename, find_param):
         find_list.insert(0, fields)
         for line in find_list:
             print(*line, end='')
+        return find_list
 
 filename = './Seminar8/phone.txt'
 fields = ["Фамилия", "Имя", "Отчество", "Телефон\n\n"]
 abon_list = [
-    ['Пушкин','Александр','Сергеевич',999],
-    ['Есенин','Сергей','Александрович',123]
+    ['Пушкин','Александр','Сергеевич','999\n'],
+    ['Есенин','Сергей','Александрович','123\n'],
+    ['Булгаков','Михаил','Афанасьевич','987\n']
 ]
 go_to_function(show_menu())
